@@ -293,3 +293,165 @@ html, body {
   from { transform: translate(-50%,-50%) scale(.5); opacity: 0; }
   to   { transform: translate(-50%,-50%) scale(1);  opacity: 1; }
 }
+
+/* ── Client meta in HUD ─────────────────────────────────── */
+#client-info {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+#client-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+#client-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,.88);
+  white-space: nowrap;
+  line-height: 1.1;
+}
+#client-trait {
+  font-size: 9px;
+  color: rgba(255,255,255,.42);
+  white-space: nowrap;
+}
+
+/* ── Area / difficulty badge ────────────────────────────── */
+#area-badge {
+  position: absolute;
+  top: 56px;
+  left: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,.68);
+  background: rgba(0,0,0,.42);
+  padding: 3px 9px;
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  pointer-events: none;
+  z-index: 12;
+}
+
+/* ── Tool Bar ────────────────────────────────────────────── */
+#tool-bar {
+  position: fixed;
+  bottom: 68px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  background: rgba(0,0,0,.68);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,200,100,.13);
+  border-radius: 22px;
+  padding: 7px 12px;
+  pointer-events: auto;
+  z-index: 20;
+}
+
+.tool-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,.07);
+  border: 1.5px solid rgba(255,255,255,.10);
+  border-radius: 14px;
+  width: 54px;
+  height: 54px;
+  cursor: pointer;
+  transition: background .14s, border-color .14s, transform .1s, opacity .2s;
+  touch-action: manipulation;
+  gap: 2px;
+  -webkit-tap-highlight-color: transparent;
+}
+.tool-btn:active { transform: scale(.92); }
+.tool-btn.active {
+  background: rgba(220,130,55,.30);
+  border-color: rgba(230,145,70,.75);
+  box-shadow: 0 0 12px rgba(230,140,60,.22);
+}
+.tool-btn.depleted {
+  opacity: .32;
+  pointer-events: none;
+}
+.tool-icon  { font-size: 22px; line-height: 1; }
+.tool-label {
+  font-size: 7px;
+  font-weight: 600;
+  color: rgba(255,255,255,.50);
+  letter-spacing: .3px;
+  text-transform: uppercase;
+}
+.tool-uses {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  font-size: 9px;
+  font-weight: 800;
+  color: #f5d060;
+  background: rgba(0,0,0,.55);
+  border-radius: 6px;
+  padding: 0 3px;
+  min-width: 12px;
+  text-align: center;
+  line-height: 14px;
+}
+
+/* ── Difficulty Selection Screen ────────────────────────── */
+.difficulty-options {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 14px 0 18px;
+}
+.difficulty-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,.06);
+  border: 1.5px solid rgba(255,255,255,.10);
+  border-radius: 14px;
+  padding: 12px 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: background .14s, border-color .14s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.difficulty-btn:hover { background: rgba(255,255,255,.10); }
+.difficulty-btn.selected {
+  background: rgba(220,130,55,.22);
+  border-color: rgba(230,145,70,.60);
+}
+.diff-icon { font-size: 26px; flex-shrink: 0; }
+.diff-text  { display: flex; flex-direction: column; }
+.diff-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #f0c070;
+  line-height: 1.2;
+}
+.diff-desc {
+  font-size: 11px;
+  color: rgba(255,255,255,.42);
+  margin-top: 2px;
+}
+
+/* ── Hygiene bonus row ───────────────────────────────────── */
+.hygiene-row {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,.70);
+  margin: 8px 0;
+}
+.hygiene-pts {
+  color: #7ee87e;
+  font-weight: 800;
+}

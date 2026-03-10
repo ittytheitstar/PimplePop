@@ -20,6 +20,10 @@
     <div id="hud">
       <div id="client-info">
         <span id="client-face">😐</span>
+        <div id="client-meta">
+          <span id="client-name">Client</span>
+          <span id="client-trait"></span>
+        </div>
       </div>
 
       <div id="discomfort-section">
@@ -36,10 +40,39 @@
       </div>
     </div>
 
+    <!-- Area + difficulty badge -->
+    <div id="area-badge"></div>
+
     <div id="feedback-text">&nbsp;</div>
 
     <div id="pimple-counter">
       <span id="remaining-count">0</span> remaining
+    </div>
+
+    <!-- ── Tool Bar ── -->
+    <div id="tool-bar">
+      <button class="tool-btn active" data-tool="squeeze" title="Squeeze (two-finger pinch)">
+        <span class="tool-icon">🤏</span>
+        <span class="tool-label">Squeeze</span>
+      </button>
+      <button class="tool-btn" data-tool="numbing" title="Numbing Injection — reduces pain">
+        <span class="tool-icon">💉</span>
+        <span class="tool-label">Numbing</span>
+        <span class="tool-uses" id="uses-numbing">3</span>
+      </button>
+      <button class="tool-btn" data-tool="extractor" title="Comedone Extractor — metal hoop method">
+        <span class="tool-icon">⭕</span>
+        <span class="tool-label">Extractor</span>
+      </button>
+      <button class="tool-btn" data-tool="lancet" title="Lancet — puncture cysts for easier extraction">
+        <span class="tool-icon">🩸</span>
+        <span class="tool-label">Lancet</span>
+        <span class="tool-uses" id="uses-lancet">2</span>
+      </button>
+      <button class="tool-btn" data-tool="swab" title="Cleaning Swab — clean debris for bonus points">
+        <span class="tool-icon">🧹</span>
+        <span class="tool-label">Swab</span>
+      </button>
     </div>
 
   </div><!-- /ui-overlay -->
@@ -59,9 +92,44 @@
         <div class="instr-row">🤏 Slowly squeeze — watch the discomfort bar</div>
         <div class="instr-row">🎯 Low discomfort = correct angle &amp; pressure</div>
         <div class="instr-row">⚠️ Keep discomfort high too long and they quit!</div>
+        <div class="instr-row">💉 Tap tools to switch — numb, lance, extract or swab</div>
+        <div class="instr-row">🧹 Wipe debris between squeezes for hygiene points</div>
       </div>
       <button class="btn-primary" id="btn-start">Begin Session</button>
       <p class="desktop-hint">🖥️ Desktop: click &amp; drag near a pimple to squeeze</p>
+    </div>
+  </div>
+
+  <!-- ── Difficulty Selection ── -->
+  <div id="screen-difficulty" class="screen">
+    <div class="screen-card">
+      <div class="screen-icon">⚡</div>
+      <h2>Choose Difficulty</h2>
+      <p class="subtitle">Affects angle tolerance, force window &amp; point multiplier</p>
+      <div class="difficulty-options">
+        <button class="difficulty-btn" id="btn-easy" data-diff="easy">
+          <span class="diff-icon">🌸</span>
+          <div class="diff-text">
+            <span class="diff-label">Easy</span>
+            <span class="diff-desc">Wide tolerances · 0.6× points</span>
+          </div>
+        </button>
+        <button class="difficulty-btn selected" id="btn-normal" data-diff="normal">
+          <span class="diff-icon">⚡</span>
+          <div class="diff-text">
+            <span class="diff-label">Normal</span>
+            <span class="diff-desc">Standard play · 1× points</span>
+          </div>
+        </button>
+        <button class="difficulty-btn" id="btn-hard" data-diff="hard">
+          <span class="diff-icon">💀</span>
+          <div class="diff-text">
+            <span class="diff-label">Hard</span>
+            <span class="diff-desc">Precision required · 2× points</span>
+          </div>
+        </button>
+      </div>
+      <button class="btn-primary" id="btn-start-game">Start Session →</button>
     </div>
   </div>
 
@@ -80,6 +148,9 @@
       <div class="screen-icon">✨</div>
       <h2>Session Complete!</h2>
       <p id="complete-message">All extractions successful!</p>
+      <div id="hygiene-bonus-row" style="display:none" class="hygiene-row">
+        🧹 Hygiene Bonus: <span id="hygiene-bonus-pts" class="hygiene-pts">+0</span>
+      </div>
       <div class="score-display">Score: <span id="complete-score">0</span></div>
       <button class="btn-primary" id="btn-next">Next Client →</button>
     </div>
