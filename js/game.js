@@ -25,10 +25,18 @@ const CFG = {
   // Squeeze detection
   SQUEEZE_ACTIVATION_RADIUS: 100,   // px: midpoint must be this close to a pimple
   MOUSE_MAX_DRAG:            160,    // px for 100% force on desktop
+  MOUSE_MIN_DRAG:              4,    // px: minimum drag before squeeze activates
+  TOUCH_VIRTUAL_OFFSET:       55,    // px: half-span of virtual touch points (mouse mode)
+  TOUCH_MIN_INIT_DIST:        10,    // px: minimum initial touch distance
 
   // Visual
   SKIN_PORE_DENSITY:    0.018,
   SKIN_HAIR_DENSITY:    0.004,
+  PULSE_SPEED_MS:          90,      // ms per pulse cycle for discomfort danger animation
+  NEAR_COMPLETE_PCT:       70,      // % progress at which to show "Almost there…" hint
+
+  // Game loop
+  MAX_FRAME_DT:          0.05,      // seconds — cap to avoid physics tunnelling on tab focus
 };
 
 const PIMPLE_CFG = {
@@ -732,7 +740,7 @@ class InputController {
     if (pts.length < 2) { this.squeeze = null; return; }
     const [t1, t2] = pts;
     const dist  = Math.hypot(t2.x - t1.x, t2.y - t1.y);
-    if (!this.initDist || this.initDist < 10) {
+    if (!this.initDist || this.initDist < CFG.TOUCH_MIN_INIT_DIST) {
       this.initDist = dist;
       this.prevDist = dist;
     }
@@ -767,13 +775,13 @@ class InputController {
     const dx  = this.mPos.x - this.mStart.x;
     const dy  = this.mPos.y - this.mStart.y;
     const drag = Math.hypot(dx, dy);
-    if (drag < 4) { this.squeeze = null; return; }
+    if (drag < CFG.MOUSE_MIN_DRAG) { this.squeeze = null; return; }
     const rawAng = Math.atan2(dy, dx);
     const angle  = ((rawAng % Math.PI) + Math.PI) % Math.PI;
     const force  = clamp(drag / CFG.MOUSE_MAX_DRAG, 0, 1);
     // Speed is simplified on desktop (steady drag assumed slow)
     const speed  = 0.02;
-    const offset = 55;
+    const offset = CFG.TOUCH_VIRTUAL_OFFSET;
     this.squeeze = {
       isActive: true,
       midX: this.mStart.x,
@@ -849,7 +857,7 @@ const UI = {
     this.discomfortFill.style.width = `${pct}%`;
 
     if (bar.inDanger) {
-      const pulse = Math.sin(Date.now() / 90) * .5 + .5;
+      const pulse = Math.sin(Date.now() / CFG.PULSE_SPEED_MS) * .5 + .5;
       this.discomfortGlow.style.boxShadow =
         `inset 0 0 ${8 + pulse * 10}px rgba(244,67,54,${.5 + pulse * .3})`;
       this.hud.classList.add('hud-danger');
@@ -858,9 +866,10 @@ const UI = {
       this.hud.classList.remove('hud-danger');
     }
 
-    // Client face
+    // Client face — step through faces evenly across 0-100 discomfort range
     const faces = CLIENT_FACES;
-    const idx   = Math.min(faces.length - 1, Math.floor(pct / 17));
+    const faceStep = 100 / faces.length;
+    const idx   = Math.min(faces.length - 1, Math.floor(pct / faceStep));
     this.clientFace.textContent = faces[idx];
   },
 
@@ -1004,7 +1013,7 @@ class PimplePopGame {
 
   // ── Game Loop ──────────────────────────────────────────────────────────────
   _loop(ts) {
-    const dt = clamp((ts - this.lastTime) / 1000, 0, .05);
+    const dt = clamp((ts - this.lastTime) / 1000, 0, CFG.MAX_FRAME_DT);
     this.lastTime = ts;
 
     if (this.state === 'playing') this._update(dt);
@@ -1045,7 +1054,7 @@ class PimplePopGame {
             this._setFeedback('Too fast! Slow down…', dt);
           } else if (adiff <= p.angleTolerance && sq.force >= p.forceMin && sq.force <= p.forceMax) {
             const pct = Math.round(p.progress * 100);
-            if (pct > 70) this._setFeedback(`Almost there… ${pct}%`, dt);
+            if (pct > CFG.NEAR_COMPLETE_PCT) this._setFeedback(`Almost there… ${pct}%`, dt);
             else this._setFeedback('Good angle! Keep it steady…', dt);
           } else if (adiff > p.angleTolerance) {
             this._setFeedback('Wrong angle — adjust your fingers', dt);
