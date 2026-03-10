@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1a0f08">
+  <title>PimplePop — Skin Extraction Simulator</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ── Game Canvas ── -->
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- ── HUD overlay ── -->
+  <div id="ui-overlay">
+
+    <div id="hud">
+      <div id="client-info">
+        <span id="client-face">😐</span>
+      </div>
+
+      <div id="discomfort-section">
+        <div id="discomfort-label">DISCOMFORT</div>
+        <div id="discomfort-track">
+          <div id="discomfort-fill"></div>
+          <div id="discomfort-glow"></div>
+        </div>
+      </div>
+
+      <div id="score-section">
+        <div id="score-value">0</div>
+        <div id="score-label">PTS</div>
+      </div>
+    </div>
+
+    <div id="feedback-text">&nbsp;</div>
+
+    <div id="pimple-counter">
+      <span id="remaining-count">0</span> remaining
+    </div>
+
+  </div><!-- /ui-overlay -->
+
+  <!-- ── Score popup template ── -->
+  <div id="score-popup-tpl" class="score-popup" style="display:none"></div>
+
+  <!-- ── Screens ── -->
+
+  <div id="screen-start" class="screen active">
+    <div class="screen-card">
+      <div class="screen-icon">🧴</div>
+      <h1>PimplePop</h1>
+      <p class="subtitle">Skin Extraction Simulator</p>
+      <div class="instructions">
+        <div class="instr-row">👆👆 Place two fingers on either side of a pimple</div>
+        <div class="instr-row">🤏 Slowly squeeze — watch the discomfort bar</div>
+        <div class="instr-row">🎯 Low discomfort = correct angle &amp; pressure</div>
+        <div class="instr-row">⚠️ Keep discomfort high too long and they quit!</div>
+      </div>
+      <button class="btn-primary" id="btn-start">Begin Session</button>
+      <p class="desktop-hint">🖥️ Desktop: click &amp; drag near a pimple to squeeze</p>
+    </div>
+  </div>
+
+  <div id="screen-gameover" class="screen">
+    <div class="screen-card">
+      <div class="screen-icon" id="gameover-icon">😤</div>
+      <h2 id="gameover-title">Client Left!</h2>
+      <p id="gameover-message">The discomfort was too much to bear…</p>
+      <div class="score-display">Score: <span id="gameover-score">0</span></div>
+      <button class="btn-primary" id="btn-restart">Try Again</button>
+    </div>
+  </div>
+
+  <div id="screen-complete" class="screen">
+    <div class="screen-card">
+      <div class="screen-icon">✨</div>
+      <h2>Session Complete!</h2>
+      <p id="complete-message">All extractions successful!</p>
+      <div class="score-display">Score: <span id="complete-score">0</span></div>
+      <button class="btn-primary" id="btn-next">Next Client →</button>
+    </div>
+  </div>
+
+  <!-- ── Scripts ── -->
+  <script src="js/game.js"></script>
+
+</body>
+</html>
